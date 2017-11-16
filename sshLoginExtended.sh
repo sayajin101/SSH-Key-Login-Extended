@@ -35,7 +35,11 @@ url="https://api.telegram.org/bot${botToken}/sendMessage";
 message="${sshUser} logged into `hostname` (${ipAddress}) from address ${fromIpAddress}";
 
 # Sent login notification to Telegram group
-curl -s --max-time ${timeout} -d "chat_id=${telegramGroupID}&disable_web_page_preview=1&parse_mode=markdown&text=${message}" ${url} >/dev/null
+if [ -n "${telegramGroupID}" ] || [ -n "${botToken}" ]; then
+	curl -s --max-time ${timeout} -d "chat_id=${telegramGroupID}&disable_web_page_preview=1&parse_mode=markdown&text=${message}" ${url} >/dev/null
+else
+	echo -e "\nPlease set 'telegramGroupID' & 'botToken' variables if you want Telegram login notifications active\n";
+fi;
 
 #############
 ## History ##
