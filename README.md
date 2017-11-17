@@ -11,3 +11,7 @@
 - To do that edit "/etc/ssh/sshd_config" and modify the below options as below
   - ChallengeResponseAuthentication no
   - PasswordAuthentication no
+
+- To get this to work on CentOS 5 you will need to edit the /etc/bashrc
+ - above the `case $TERM in` insert `if [ -z "$PROMPT_COMMAND" ]; then`
+ - and below the `esac` insert `fi`
