@@ -17,7 +17,7 @@ defaultInterface=$(route -n | awk '{ if ($1 == "0.0.0.0") print $8}';);
 ipAddress=$(ip addr show ${defaultInterface} | grep -m1 "inet\b" | awk '{print $2}' | cut -d/ -f1;);
 
 # Get Client IP Address
-fromIpAddress=$(who am i | awk '{print $5}' | tr -d '()');
+fromIpAddress=$(who am i | grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b");
 
 # SSH Key Fingerprint stuff
 lastLogin=$(tac /var/log/secure | grep -m 1 'Accepted publickey for.*RSA SHA256:\|Found matching RSA key: \|Accepted password for ');
