@@ -16,6 +16,9 @@ fi;
 defaultInterface=$(route -n | awk '{ if ($1 == "0.0.0.0") print $8}';);
 ipAddress=$(ip addr show ${defaultInterface} | grep -m1 "inet\b" | awk '{print $2}' | cut -d/ -f1;);
 
+# Get Session Count
+sessionCount=$(w -sh | wc -l);
+
 # Get Client IP Address
 fromIpAddress=$(who am i | grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b");
 
@@ -66,9 +69,9 @@ if [ -n "${telegramGroupID}" ] && [ -n "${botToken}" ]; then
 	timeout="10";
 	url="https://api.telegram.org/bot${botToken}/sendMessage";
 	if [ "${usedSshKey}" -eq "1" ]; then
-		message="${sshUser} logged into `hostname` (${ipAddress}) from address ${fromIpAddress}";
+		message="${sshUser} logged into `hostname` (${ipAddress}) from address ${fromIpAddress}, Active Session Count: ${sessionCount}";
 	elif [ "${usedSshKey}" -eq "0" ]; then
-		message="Non key user (${sshUser}) logged into `hostname` (${ipAddress}) from address ${fromIpAddress}";
+		message="Non key user (${sshUser}) logged into `hostname` (${ipAddress}) from address ${fromIpAddress}, Active Session Count: ${sessionCount}";
 	fi;
 
 	# Send login notification to Telegram group
